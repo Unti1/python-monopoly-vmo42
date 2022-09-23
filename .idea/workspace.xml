@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="69f2771c-dea5-4988-a24a-0a70431b1822" name="Default Changelist" comment="test gateway" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/SomeThingShitOnJava">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/SomeThingShitOnJava">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="SomeThingShitOnJava" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Artem" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2FAXaKN0K5mcsAOXIf8J75otQBz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="jdk.selected.JAVA_MODULE" value="corretto-1.8" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="SomeThingShitOnJava.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="69f2771c-dea5-4988-a24a-0a70431b1822" name="Default Changelist" comment="" />
+      <created>1663935924414</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1663935924414</updated>
+      <workItem from="1663935929828" duration="2555000" />
+    </task>
+    <task id="LOCAL-00001" summary="initJava">
+      <created>1663936150049</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1663936150049</updated>
+    </task>
+    <task id="LOCAL-00002" summary="ReadyForJob">
+      <created>1663939654018</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1663939654018</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Get Gateway Server for Python ready">
+      <created>1663940198830</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1663940198830</updated>
+    </task>
+    <task id="LOCAL-00004" summary="test gateway">
+      <created>1663940655133</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1663940655133</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initJava" />
+    <MESSAGE value="ReadyForJob" />
+    <MESSAGE value="Get Gateway Server for Python ready" />
+    <MESSAGE value="test gateway" />
+    <option name="LAST_COMMIT_MESSAGE" value="test gateway" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="387" y="114" key="#Project_Structure" timestamp="1663936283334">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state x="387" y="114" key="#Project_Structure/0.0.1814.1080@0.0.1814.1080" timestamp="1663936283334" />
+    <state x="687" y="295" key="FileChooserDialogImpl" timestamp="1663940878836">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state x="687" y="295" key="FileChooserDialogImpl/0.0.1814.1080@0.0.1814.1080" timestamp="1663940878836" />
+    <state width="1771" height="295" key="GridCell.Tab.0.bottom" timestamp="1663940894192">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state width="1771" height="295" key="GridCell.Tab.0.bottom/0.0.1814.1080@0.0.1814.1080" timestamp="1663940894192" />
+    <state width="1771" height="295" key="GridCell.Tab.0.center" timestamp="1663940894191">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state width="1771" height="295" key="GridCell.Tab.0.center/0.0.1814.1080@0.0.1814.1080" timestamp="1663940894191" />
+    <state width="1771" height="295" key="GridCell.Tab.0.left" timestamp="1663940894191">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state width="1771" height="295" key="GridCell.Tab.0.left/0.0.1814.1080@0.0.1814.1080" timestamp="1663940894191" />
+    <state width="1771" height="295" key="GridCell.Tab.0.right" timestamp="1663940894192">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state width="1771" height="295" key="GridCell.Tab.0.right/0.0.1814.1080@0.0.1814.1080" timestamp="1663940894192" />
+    <state x="499" y="260" key="Vcs.Push.Dialog.v2" timestamp="1663940667726">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state x="499" y="260" key="Vcs.Push.Dialog.v2/0.0.1814.1080@0.0.1814.1080" timestamp="1663940667726" />
+    <state x="716" y="454" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1663940673786">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state x="716" y="454" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1814.1080@0.0.1814.1080" timestamp="1663940673786" />
+    <state x="289" y="150" key="new project wizard" timestamp="1663936047528">
+      <screen x="0" y="0" width="1814" height="1080" />
+    </state>
+    <state x="289" y="150" key="new project wizard/0.0.1814.1080@0.0.1814.1080" timestamp="1663936047528" />
+  </component>
+</project>
