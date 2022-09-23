@@ -1,1 +1,2 @@
-# pythyn-monopoly-vmo42
+# Java-part of project
+# By Артем Янпольский
