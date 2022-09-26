@@ -9,3 +9,5 @@ python -m venv python-java-monopoly-vmo42<br>
 
 <h3>Установите используемые в проекте библиотеки:</h3>
 pip3 install -r requirements.txt
+
+# Распределение обязанностей
