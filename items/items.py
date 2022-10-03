@@ -3,6 +3,19 @@ class Map:
         self.__SessionID: str = ""
         self.__CurrentUsersList: dict = {}
         self.__MapImagePath: str = ""
+        self.__MapStructure = [
+            "-----------",
+            "-         -",
+            "-         -",
+            "-         -",
+            "-         -",
+            "-         -",
+            "-         -",
+            "-         -",
+            "-         -",
+            "-         -",
+            "-----------",
+        ]
 
     def set_MapImagePath(self, value: str):
         self.__MapImagePath = value
@@ -24,3 +37,7 @@ class Map:
     @ property
     def get_SessionID(self):
         return (self.__SessionID)
+        
+    @ property
+    def get_MapStructure(self):
+        return (self.__MapStructure)
