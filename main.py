@@ -11,7 +11,8 @@ class Game():
             "MainMenu": False,
             "StartGame": False
         }
-
+        # Позиция для игровой доски
+        self.__Outofboard = tuple(map(lambda x: x//4, self.screen_size_setup))
         pygame.init()
         pygame.mixer.init()  # для звука
         pygame.display.set_caption("Monopoly")
@@ -32,6 +33,11 @@ class Game():
                         self.running = False
             case pygame.KEYUP:
                 pass
+
+    def mouse_control(self, event: pygame.event):
+        match event.type:
+            case pygame.MOUSEBUTTONDOWN:
+                print("Нажатие кнопкой мыши")
     """
     Обработчик событий на 
     """
@@ -40,18 +46,61 @@ class Game():
         for event in pygame.event.get():
             print(event)
             self.keyboard_control(event)
+            self.mouse_control(event)
             # проверить закрытие окна
             if event.type == pygame.QUIT:
                 self.running = False
+
+    def playerlist_render(self):
+        self.Players = self.playerlist_init
+        self.Players.draw(self.screen)
+
+    def map_render(self):
+        self.Map = self.map_init
+        x, y = self.__Outofboard  # Начальные координаты
+        card_counter = 0
+        for row in self.Map.get_MapStructure:  # вся строка
+            for col in row:  # каждый символ
+                if col == ".":  # для угловых карт
+                    card = items.CardMap(x, y, 80, 80)
+                    card.Name = "Карта #{card_counter}"
+                    card.draw(self.screen)
+                    x += card.Size[1] + card.card_offset  # границы карточек
+                elif col == "-":  # для карт по горизонтали
+                    card = items.CardMap(x, y, 40, 80)
+                    card.Name = x
+                    card.draw(self.screen)
+                    x += card.Size[0] + card.card_offset  # границы карточек
+                elif col == "+":
+                    card = items.CardMap(x, y, 80, 40)
+                    card.Name = x
+                    card.draw(self.screen)
+                    x += card.Size[0] + card.card_offset  # границы карточек
+                else:
+                    card = None
+                    x += 40 + 2  # границы карточек
+
+            if row == self.Map.get_MapStructure[0] or row == self.Map.get_MapStructure[-1]:
+                y += card.Size[0] + 2  # то же самое и с высотой
+                x = self.__Outofboard[0]
+            else:
+                y += card.Size[1] + 2
+            x = self.__Outofboard[0]
+        return (x, y)
+
+    @property
+    def playerlist_init(self):
+        PlayerList = interface.PlayerList()
+        PlayerList.XYpos = (0, self.__Outofboard[1])
+        PlayerList.Size = (400, 600)
+        return (PlayerList)
+
     @property
     def map_init(self):
         Map = items.Map()
         Map.set_MapImagePath(config['FilePath']['PLAYGROUND'])
         Map.set_SessionID(random.randrange(100000000, 999999999))
-        return(Map)
-
-    def start_game(self):
-        self.Map = self.map_init()
+        return (Map)
 
     @property
     def screen_size_setup(self):
@@ -68,13 +117,23 @@ class Game():
     def fps_setup(self):
         return (int(config['Display']['FPS']))
 
+    def start_game(self):
+        self.map_render()
+        self.playerlist_render()
+
+    def mainmenu_game(self):
+        mm = interface.MainMenu()
+        mm.draw(self.screen)
+
     def run(self):
         self.screen.fill(self.bg_color_setup)
         pygame.display.flip()
-        self.start_game()
+        self.mainmenu_game()
+        # self.start_game()
         while self.running:
             self.clock.tick(self.fps_setup)
             self.event_control()
+            pygame.display.update()
 
         pygame.quit()
 
