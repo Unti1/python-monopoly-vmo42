@@ -44,7 +44,7 @@ class Game():
 
     def event_control(self):
         for event in pygame.event.get():
-            print(event)
+            # print(event)
             self.keyboard_control(event)
             self.mouse_control(event)
             # проверить закрытие окна
@@ -62,24 +62,26 @@ class Game():
         for row in self.Map.get_MapStructure:  # вся строка
             for col in row:  # каждый символ
                 if col == ".":  # для угловых карт
-                    card = items.CardMap(x, y, 80, 80)
-                    card.Name = "Карта #{card_counter}"
+                    card = items.CardMap(x, y, 120, 120)
+                    card.Name = f"{card_counter}"
                     card.draw(self.screen)
                     x += card.Size[1] + card.card_offset  # границы карточек
+                    card_counter += 1
                 elif col == "-":  # для карт по горизонтали
-                    card = items.CardMap(x, y, 40, 80)
-                    card.Name = x
+                    card = items.CardMap(x, y, 80, 120)
+                    card.Name = f"{card_counter}"
                     card.draw(self.screen)
                     x += card.Size[0] + card.card_offset  # границы карточек
+                    card_counter += 1
                 elif col == "+":
-                    card = items.CardMap(x, y, 80, 40)
-                    card.Name = x
+                    card = items.CardMap(x, y, 120, 80)
+                    card.Name = f"{card_counter}"
                     card.draw(self.screen)
                     x += card.Size[0] + card.card_offset  # границы карточек
+                    card_counter += 1
                 else:
                     card = None
-                    x += 40 + 2  # границы карточек
-
+                    x += 80 + 2  # границы карточек
             if row == self.Map.get_MapStructure[0] or row == self.Map.get_MapStructure[-1]:
                 y += card.Size[0] + 2  # то же самое и с высотой
                 x = self.__Outofboard[0]
@@ -123,17 +125,19 @@ class Game():
 
     def mainmenu_game(self):
         mm = interface.MainMenu()
-        mm.draw(self.screen)
+        # mm.menu_draw(self.screen)
+        mm.buttons_draw(self.screen)
+        # print(mm.buttons_draw(self.screen))
 
     def run(self):
         self.screen.fill(self.bg_color_setup)
         pygame.display.flip()
-        self.mainmenu_game()
-        # self.start_game()
         while self.running:
+            self.start_game()
+            # self.mainmenu_game()
             self.clock.tick(self.fps_setup)
             self.event_control()
-            pygame.display.update()
+            pygame.display.flip()
 
         pygame.quit()
 
