@@ -11,18 +11,16 @@ class MainMenu:
             int(config.get("Display", "height"))//2
         )
         self.Size = (600, 600)
-        self.rect = Rect(self.XYpos[0], self.XYpos[1],
-                         self.Size[0], self.Size[1])
-        self.buttons_path = "assets\img\menu"
-        self.buttons_pos = []
-    
-    def buttons_draw(self,screen):
-        
+        self.buttons_path = "assets/img/menu"
+        self.buttons_y_pos = [self.XYpos[0] +
+                              ((self.Size[1]//3)*n) for n in range(0, 3)]
 
-    def draw(self, screen: display):
-        self.image = Surface(self.Size)
-        self.image.fill(Color("#888888"))
-        screen.blit(self.image, (self.XYpos[0], self.XYpos[1]))
+    def buttons_draw(self, screen):
+        for y in self.buttons_y_pos:
+            self.rect = Rect(self.XYpos[0], y,
+                             self.Size[0], self.Size[1]//3)
+            self.image = image.load(f"{self.buttons_path}/run_but.png")
+            screen.blit(self.image, (self.XYpos[0], y))
 
 
 class PlayerList:
