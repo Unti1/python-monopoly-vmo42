@@ -17,7 +17,7 @@ class MainMenu:
         self.buttons_pos = []
     
     def buttons_draw(self,screen):
-        
+        pass        
 
     def draw(self, screen: display):
         self.image = Surface(self.Size)
