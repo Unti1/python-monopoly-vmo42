@@ -1,6 +1,3 @@
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
@@ -20,12 +17,22 @@ public class User {
         this.y = y;
     }
 }
-class json {
-    public static boolean write(String src, String user) throws IOException {
 
-        File file = new File(src);
-        if (!file.exists()) {
+class json {
+    private static File file;
+    private static String user, src;
+    json(String src, String user) throws IOException {
+        file = new File(src);
+        this.user = user;
+        this.src = src;
+        if (!file.exists()){
             file.createNewFile();
+            write();
+        }else write();
+    }
+
+
+    private static boolean write() throws IOException {
             try (FileChannel channel = (FileChannel) Files.newByteChannel(Paths.get(src),
                     StandardOpenOption.WRITE, StandardOpenOption.CREATE,StandardOpenOption.READ)) {
                 MappedByteBuffer MBB = channel.map(FileChannel.MapMode.READ_WRITE, 0, user.length());
@@ -36,26 +43,9 @@ class json {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            try (FileChannel channel = (FileChannel) Files.newByteChannel(Paths.get(src),
-                    StandardOpenOption.WRITE, StandardOpenOption.CREATE,StandardOpenOption.READ)) {
-                MappedByteBuffer MBB = channel.map(FileChannel.MapMode.READ_WRITE, 0, user.length());
-                for (int i = 0; i < user.toCharArray().length; i++) {
-                    MBB.put((byte) user.charAt(i));
-                }
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         return false;
     }
-}
-class test{
-    public static void main(String[] args) throws IOException {
-        User user = new User(0,0,0);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String src = "SomeThingShitOnJava/src/main/resources\\User.json";
-        System.out.println(json.write(src,gson.toJson(user)));
-    }
+
+
+
 }
