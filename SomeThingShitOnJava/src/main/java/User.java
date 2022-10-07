@@ -26,6 +26,16 @@ class json {
         File file = new File(src);
         if (!file.exists()) {
             file.createNewFile();
+            try (FileChannel channel = (FileChannel) Files.newByteChannel(Paths.get(src),
+                    StandardOpenOption.WRITE, StandardOpenOption.CREATE,StandardOpenOption.READ)) {
+                MappedByteBuffer MBB = channel.map(FileChannel.MapMode.READ_WRITE, 0, user.length());
+                for (int i = 0; i < user.toCharArray().length; i++) {
+                    MBB.put((byte) user.charAt(i));
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             try (FileChannel channel = (FileChannel) Files.newByteChannel(Paths.get(src),
                     StandardOpenOption.WRITE, StandardOpenOption.CREATE,StandardOpenOption.READ)) {
