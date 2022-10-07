@@ -10,10 +10,11 @@ class CardMap:
         self.card_offset: int = 2 # ширина границы карты
         self.rect = Rect(x,y,width,height)
 
-    def draw(self, screen:display): # Выводим себя на экран
+    def draw(self, screen:display,rotate: int = 0): # Выводим себя на экран
         try:
             self.image = image.load(f"assets/img/map/{self.Name}.png").convert()
             self.image = transform.scale(self.image,self.Size)
+            self.image = transform.rotate(self.image,rotate)
         except:
             self.image = Surface(self.Size)
             transform.scale(self.image,self.Size)
