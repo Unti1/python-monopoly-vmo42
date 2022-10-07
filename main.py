@@ -20,6 +20,7 @@ class Game():
         self.screen = pygame.display.set_mode(self.screen_size_setup)
         self.clock = pygame.time.Clock()
         self.running = True
+        self.__CardsMap = []
 
     """
     Контроль нажатых клавишь на клавиатуре
