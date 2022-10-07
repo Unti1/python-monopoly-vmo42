@@ -20,7 +20,7 @@ class Game():
         self.screen = pygame.display.set_mode(self.screen_size_setup)
         self.clock = pygame.time.Clock()
         self.running = True
-
+        self.
     """
     Контроль нажатых клавишь на клавиатуре
     """
@@ -56,6 +56,12 @@ class Game():
         self.Players.draw(self.screen)
 
     def map_render(self):
+        #############################
+        self.__
+
+
+
+        ##############################
         self.Map = self.map_init
         x, y = self.__Outofboard  # Начальные координаты
         card_counter = 0
