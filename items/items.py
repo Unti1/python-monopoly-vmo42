@@ -1,20 +1,21 @@
 from pygame import *
 
 class CardMap:
-    def __init__(self,x,y,width,height):
+    def __init__(self,name:str,id:int,x:int,y:int,width:int,height:int):
         sprite.Sprite.__init__(self)
-        self.Name: str = ""
-        self.Owner: str = ""
+        self.Name: str = name
+        self.ID: str = id
         self.XYpos: tuple = (x,y)
         self.Size: tuple = (width,height)
         self.card_offset: int = 2 # ширина границы карты
-        self.rect = Rect(x,y,width,height)
 
-    def draw(self, screen:display,rotate: int = 0): # Выводим себя на экран
+    def draw(self, screen:display,rotate: int = 0, miror: tuple[int] = (0,0)): # Выводим себя на экран
+        self.rect = Rect(self.XYpos[0],self.XYpos[1],self.Size[0],self.Size[1])
         try:
-            self.image = image.load(f"assets/img/map/{self.Name}.png").convert()
+            self.image = image.load(f"assets/img/map/{self.Name}").convert()
             self.image = transform.scale(self.image,self.Size)
             self.image = transform.rotate(self.image,rotate)
+            self.image = transform.flip(self.image,miror[0],miror[1])
         except:
             self.image = Surface(self.Size)
             transform.scale(self.image,self.Size)
@@ -23,7 +24,7 @@ class CardMap:
     
     @property
     def card_area(self):
-        return(range(self.XYpos[0],self.Size[0],range(self.XYpos[1],self.Size[1])))
+        return(range(self.XYpos[0],self.XYpos[0]+self.Size[0]),range(self.XYpos[1],self.XYpos[1]+self.Size[1]))
 
 class Map:
     def __init__(self):
@@ -44,9 +45,18 @@ class Map:
             ".---------.",
         ]
         self.__MapCards: list[CardMap] = []
+    def reshuffle_cards(self):
+        import random
+        if len(self.__MapCards) > 4:
+            cards = self.__MapCards[4:]
+            random.shuffle(cards)
+            self.__MapCards[4:] = cards
 
     def append_card(self,card: CardMap):
         self.__MapCards.append(card)
+
+    def insert_card(self,ind,card: CardMap):
+        self.__MapCards.insert(ind,card)
 
     def set_MapImagePath(self, value: str):
         self.__MapImagePath = value
