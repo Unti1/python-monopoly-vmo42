@@ -6,7 +6,6 @@ import random
 
 class Game():
     def __init__(self):
-
         self.__StatusBar = {
             "MainMenu": False,
             "StartGame": False
@@ -21,11 +20,13 @@ class Game():
         self.screen = pygame.display.set_mode(self.screen_size_setup)
         self.clock = pygame.time.Clock()
         self.running = True
-    """
-    Контроль нажатых клавишь на клавиатуре
-    """
-
+    
     def keyboard_control(self, event: pygame.event):
+        """
+        Отслеживаний действий на клавиатуре
+        Args:
+            event (pygame.event): передать окно в котором происходит событие
+        """
         match event.type:
             case pygame.KEYDOWN:
                 match event.unicode:
@@ -35,19 +36,27 @@ class Game():
                 pass
 
     def mouse_control(self, event: pygame.event):
+        """
+        Модуль отслеживания мыши
+        TODO: Доделать наведение на карточку(увеличение её размера) и переворот карты 
+        Args:
+            event (pygame.event): передать окно в котором происходит событие
+        """
         match event.type:
             case pygame.MOUSEBUTTONDOWN:
 
                 for i in range(len(self.cards_areas)):
                     if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
                         print("Нажата карта:", self.Map.get_MapCards[i].Name)
+                        self.Map.get_MapCards[i].back_draw(self.screen)
                         break
 
-    """
-    Обработчик событий
-    """
 
     def event_control(self):
+        """
+        Обработчик событий всех событий (клавиатура и мышь)
+        TODO: Возможно потребуется обработка действий в отдельном потоке
+        """
         for event in pygame.event.get():
             # print(event)
             self.keyboard_control(event)
@@ -57,17 +66,24 @@ class Game():
                 self.running = False
 
     def playerlist_render(self):
+        '''
+        TODO: Завершить модуль по списку игроков. Нужен класс игрока
+        '''
         self.Players = self.playerlist_init
         self.Players.draw(self.screen)
 
     def map_render(self):
-        self.Map = self.map_init
-        self.cards_init
-        x, y = self.__Outofboard  # Начальные координаты
-        card_width = 80
-        card_height = 120
-        card_counter = 0
-        corner_counter = 0
+        """
+            Генерирует кару и карточки на карте.
+
+        """
+        self.Map = self.map_init # Создания объекта карты
+        self.cards_init # Cоздание пустых объектов для карт
+        x, y = self.__Outofboard  # Отступ от угла окна
+        card_width = 80 # Ширина карты
+        card_height = 120 # Высота карты
+        card_counter = 0 # счетчик для обычных карт
+        corner_counter = 0 # счетчик для угловых карт
         self.Map.reshuffle_cards()
         no_corners_cards = self.Map.get_MapCards[4:]
         for row in self.Map.get_MapStructure:  # вся строка
@@ -80,7 +96,6 @@ class Game():
                                 card.XYpos = (x, y)
                                 card.Size = (card_height, card_height)
                                 card.draw(self.screen)
-                                # границы карточек
                                 x += card.Size[1] + card.card_offset
                                 corner_counter += 1
                             case 1:
@@ -88,7 +103,6 @@ class Game():
                                 card.XYpos = (x, y)
                                 card.Size = (card_height, card_height)
                                 card.draw(self.screen)
-                                # границы карточек
                                 x += card.Size[1] + card.card_offset
                                 corner_counter += 1
                             case 2:
@@ -96,7 +110,6 @@ class Game():
                                 card.XYpos = (x, y)
                                 card.Size = (card_height, card_height)
                                 card.draw(self.screen)
-                                # границы карточек
                                 x += card.Size[1] + card.card_offset
                                 corner_counter += 1
                             case 3:
@@ -104,7 +117,6 @@ class Game():
                                 card.XYpos = (x, y)
                                 card.Size = (card_height, card_height)
                                 card.draw(self.screen)
-                                # границы карточек
                                 x += card.Size[0] + card.card_offset
                                 corner_counter += 1
                     case "-":  # для карт по горизонтали
@@ -152,10 +164,14 @@ class Game():
             else:
                 y += card_width + 2
             x = self.__Outofboard[0]
-        self.cards_areas = list(map(lambda x: x.card_area, self.Map.get_MapCards))
-        
+        self.cards_areas = list(map(lambda x: x.card_area, self.Map.get_MapCards)) # ВАЖНО! Задает области карточек в отдельный список для последующей работы
+
     @property
     def playerlist_init(self):
+        """
+        Рендерит область игроков
+        TODO: Доработка 
+        """
         PlayerList = interface.PlayerList()
         PlayerList.XYpos = (0, self.__Outofboard[1])
         PlayerList.Size = (400, 600)
@@ -193,6 +209,12 @@ class Game():
 
     @property
     def map_init(self):
+        """
+        Задает начальные параметры и инициирует объект карты
+
+        Returns:
+            Map : объект карты
+        """
         Map = items.Map()
         Map.set_MapImagePath(config['FilePath']['PLAYGROUND'])
         Map.set_SessionID(random.randrange(100000000, 999999999))
@@ -200,35 +222,71 @@ class Game():
 
     @property
     def screen_size_setup(self):
+        """ Выставляет параметры экрана из конфигурационного файла
+
+        Returns:
+            (width,height): (ширина,высота)
+        """
         width, height = int(config['Display']['WIDTH']), int(
             config['Display']['WIDTH'])
         return (width, height)
 
     @property
     def bg_color_setup(self):
+        """ Устанавливает цвет заднего фона
+
+        Returns:
+            color:  цвет фона
+        """
         color = list(map(int, config['Screen']['BACKGROUND_COLOR'].split(",")))
         return (color)
 
     @property
     def fps_setup(self):
+        """
+        Значение ограничение частоты кадров из конфигурационного файла
+        """
         return (int(config['Display']['FPS']))
 
     def start_game(self):
-        self.map_render()
+        """
+        Функция запуска начала игры
+        """
+        self.map_render() 
         self.playerlist_render()
 
     def mainmenu_game(self):
+        """
+        Функция запуска главного меню
+        TODO: Требуется разработка
+        """
         mm = interface.MainMenu()
         # mm.menu_draw(self.screen)
         mm.buttons_draw(self.screen)
         # print(mm.buttons_draw(self.screen))
 
-    def run(self):
+    def testing(self):
+        """Для тестирования"""
         self.screen.fill(self.bg_color_setup)
-        pygame.display.flip()
+        pygame.display.flip() #обновление кадра
+        # self.mainmenu_game()
         self.start_game()
         while self.running:
-            # self.mainmenu_game()
+            self.clock.tick(self.fps_setup)
+            self.event_control()
+            pygame.display.flip()
+
+        pygame.quit()
+
+    def run(self):
+        """
+            Запускает саму игру
+        """
+        self.screen.fill(self.bg_color_setup)
+        pygame.display.flip() #обновление кадра
+        # self.mainmenu_game()
+        self.start_game()
+        while self.running:
             self.clock.tick(self.fps_setup)
             self.event_control()
             pygame.display.flip()
@@ -237,4 +295,4 @@ class Game():
 
 
 if __name__ == '__main__':
-    Game().run()
+    Game().testing()
