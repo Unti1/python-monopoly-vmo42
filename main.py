@@ -20,7 +20,7 @@ class Game():
         self.screen = pygame.display.set_mode(self.screen_size_setup)
         self.clock = pygame.time.Clock()
         self.running = True
-    
+
     def keyboard_control(self, event: pygame.event):
         """
         Отслеживаний действий на клавиатуре
@@ -48,9 +48,10 @@ class Game():
                 for i in range(len(self.cards_areas)):
                     if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
                         print("Нажата карта:", self.Map.get_MapCards[i].Name)
-                        self.Map.get_MapCards[i].back_draw(self.screen)
-                        break
-
+                        self.Map.get_MapCards[i].back_draw(self.screen, int(
+                            config["Display"]["width"])//3, int(config["Display"]["height"])//2, (300, 500))
+                        pygame.display.flip()
+                        return (True)
 
     def event_control(self):
         """
@@ -77,13 +78,13 @@ class Game():
             Генерирует кару и карточки на карте.
 
         """
-        self.Map = self.map_init # Создания объекта карты
-        self.cards_init # Cоздание пустых объектов для карт
+        self.Map = self.map_init  # Создания объекта карты
+        self.cards_init  # Cоздание пустых объектов для карт
         x, y = self.__Outofboard  # Отступ от угла окна
-        card_width = 80 # Ширина карты
-        card_height = 120 # Высота карты
-        card_counter = 0 # счетчик для обычных карт
-        corner_counter = 0 # счетчик для угловых карт
+        card_width = 80  # Ширина карты
+        card_height = 120  # Высота карты
+        card_counter = 0  # счетчик для обычных карт
+        corner_counter = 0  # счетчик для угловых карт
         self.Map.reshuffle_cards()
         no_corners_cards = self.Map.get_MapCards[4:]
         for row in self.Map.get_MapStructure:  # вся строка
@@ -164,7 +165,9 @@ class Game():
             else:
                 y += card_width + 2
             x = self.__Outofboard[0]
-        self.cards_areas = list(map(lambda x: x.card_area, self.Map.get_MapCards)) # ВАЖНО! Задает области карточек в отдельный список для последующей работы
+        # ВАЖНО! Задает области карточек в отдельный список для последующей работы
+        self.cards_areas = list(
+            map(lambda x: x.card_area, self.Map.get_MapCards))
 
     @property
     def playerlist_init(self):
@@ -252,7 +255,7 @@ class Game():
         """
         Функция запуска начала игры
         """
-        self.map_render() 
+        self.map_render()
         self.playerlist_render()
 
     def mainmenu_game(self):
@@ -268,7 +271,7 @@ class Game():
     def testing(self):
         """Для тестирования"""
         self.screen.fill(self.bg_color_setup)
-        pygame.display.flip() #обновление кадра
+        pygame.display.flip()  # обновление кадра
         # self.mainmenu_game()
         self.start_game()
         while self.running:
@@ -283,7 +286,7 @@ class Game():
             Запускает саму игру
         """
         self.screen.fill(self.bg_color_setup)
-        pygame.display.flip() #обновление кадра
+        pygame.display.flip()  # обновление кадра
         # self.mainmenu_game()
         self.start_game()
         while self.running:

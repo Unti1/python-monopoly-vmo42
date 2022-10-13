@@ -44,15 +44,15 @@ class CardMap:
         screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
     
     def back_draw(self,screen: display, x:int, y:int, size:tuple[int,int]):
-        self.rect = Rect(x, y, size)
+        self.rect = Rect(x, y, size[0],size[1])
         try:
             # подгрузка изображения
             self.image = image.load(f"assets/img/back_cards/{self.Name}").convert()
             # подгон картинки под размер объекта
-            self.image = transform.scale(self.image, self.Size)
+            self.image = transform.scale(self.image, size)
         except:
-            self.image = Surface(self.Size)
-            transform.scale(self.image, self.Size)
+            self.image = Surface(size)
+            transform.scale(self.image, size)
             self.image.fill(Color("#888888"))
         screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
 
