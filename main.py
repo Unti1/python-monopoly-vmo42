@@ -3,8 +3,7 @@ from items import *
 import pygame
 import random
 
-
-class Game():
+class Game() :
     def __init__(self):
         self.__StatusBar = {
             "MainMenu": False,

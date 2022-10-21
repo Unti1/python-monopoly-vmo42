@@ -1,5 +1,4 @@
-from typing import NoReturn
-from pygame import *
+from settings.config import *
 
 class Player:
     """ """
