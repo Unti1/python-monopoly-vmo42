@@ -1,10 +1,11 @@
 from pygame import *
+from typing import NoReturn
 
 
 #################################################################################################################################
 class CardMap:
     """
-    Класс объекта карт игрового поля
+    Класс объекта карт на игровое поле
     """
 
     def __init__(self, name: str, id: int, x: int, y: int, width: int, height: int):
@@ -25,7 +26,7 @@ class CardMap:
         self.Size: tuple = (width, height)
         self.card_offset: int = 2  # отступ между карточками
 
-    def draw(self, screen: display, rotate: int = 0, miror: tuple[int] = (0, 0)):
+    def draw(self, screen: display, rotate: int = 0, miror: tuple[int,int] = (0, 0)) -> NoReturn:
         self.rect = Rect(self.XYpos[0], self.XYpos[1],
                          self.Size[0], self.Size[1])
         try:
@@ -43,7 +44,7 @@ class CardMap:
             self.image.fill(Color("#888888"))
         screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
     
-    def back_draw(self,screen: display, x:int, y:int, size:tuple[int,int]):
+    def back_draw(self,screen: display, x:int, y:int, size:tuple[int,int]) -> NoReturn:
         self.rect = Rect(x, y, size[0],size[1])
         try:
             # подгрузка изображения
@@ -57,7 +58,7 @@ class CardMap:
         screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
 
     @property
-    def card_area(self):
+    def card_area(self) -> tuple[range,range]:
         """
         Выводит область взаимодействия карты от их позиции по X и Y
         """
@@ -88,7 +89,7 @@ class Map:
         ]
         self.__MapCards: list[CardMap] = []
 
-    def reshuffle_cards(self):
+    def reshuffle_cards(self) -> NoReturn:
         """
             Тосовка карточек поля
         """
@@ -98,7 +99,7 @@ class Map:
             random.shuffle(cards)
             self.__MapCards[4:] = cards
 
-    def append_card(self, card: CardMap):
+    def append_card(self, card: CardMap) -> NoReturn:
         """
             Добавление карты в конец списка
         Args:
@@ -106,7 +107,7 @@ class Map:
         """
         self.__MapCards.append(card)
 
-    def insert_card(self, ind, card: CardMap):
+    def insert_card(self, ind, card: CardMap) -> NoReturn:
         """
             Вставка карты на определенную позицию
         Args:
@@ -115,7 +116,7 @@ class Map:
         """
         self.__MapCards.insert(ind, card)
 
-    def set_MapImagePath(self, value: str):
+    def set_MapImagePath(self, value: str) -> NoReturn:
         """[Depracted] Путь к основному полю
 
         Args:
@@ -123,7 +124,7 @@ class Map:
         """
         self.__MapImagePath = value
 
-    def set_CurrentUsersList(self, value: dict):
+    def set_CurrentUsersList(self, value: dict) -> NoReturn:
         """
             Задать список игроков
         Args:
@@ -131,7 +132,7 @@ class Map:
         """
         self.__CurrentUsersList = value
 
-    def set_SessionID(self, value: str):
+    def set_SessionID(self, value: str) -> NoReturn:
         """ID игровой сессии
 
         Args:
@@ -140,27 +141,27 @@ class Map:
         self.__SessionID = value
 
     @ property
-    def get_MapImagePath(self):
+    def get_MapImagePath(self) -> str:
         """[Depracted] Путь к картинке основному поля"""
         return (self.__MapImagePath)
 
     @ property
-    def get_CurrentUsersList(self):
+    def get_CurrentUsersList(self) -> list[str]:
         """Получить список текущих игроков на карте"""
         return (self.__CurrentUsersList)
 
     @ property
-    def get_SessionID(self):
+    def get_SessionID(self) -> str:
         """Получить ID сессию"""
         return (self.__SessionID)
 
     @ property
-    def get_MapStructure(self):
+    def get_MapStructure(self) -> list[str]:
         """Получить структуру поля(для рендеринга карты)"""
         return (self.__MapStructure)
 
     @ property
-    def get_MapCards(self):
+    def get_MapCards(self) -> list[CardMap]:
         """Получить карты на поле"""
         return (self.__MapCards)
 
