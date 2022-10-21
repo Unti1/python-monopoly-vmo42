@@ -1,19 +1,21 @@
 from typing import NoReturn
-
+from pygame import *
 
 class Player:
     """ """
-
-    counter_players: int = 0
-
     def __init__(self):
         """ """
-        Player.counter_players += 1 
+        sprite.Sprite.__init__(self)
+        self._Size: tuple = (50,50)
 
-        self._ID: str = str(Player.counter_players)
+        Player.counter_players += 1 
+        self._ID: str = "" # Будет задаваться из .env от каждого пользователя
         self._money: int = 500
         # self.cards: List[] # должен быть List типа класса, который хранит карточки 
         self._pos: int = 0
+
+    def get_size(self) -> str:
+        return self._Size
 
     def get_id(self) -> str:
         """ """
@@ -50,3 +52,7 @@ class Player:
             self._pos += val - 39
         else:
             self._pos += val
+    
+    def change_size(self,val:tuple[int,int]|list[int,int]) -> NoReturn:
+        if len(val) == 2:
+            self._Size = val
