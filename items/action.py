@@ -50,23 +50,23 @@ class Action:
             ]}
             if choice == 1:
                 _money += val
-                pyautogui.alert(text = shans_dict['shans'][0],title = 'Налоги', button = 'Ок')
+                pyautogui.alert(text = shans_dict['shans'][0],title = 'Шанс', button = 'Ок')
                 return _money
             elif choice == 2:
                 _money -= 150
-                pyautogui.alert(text = shans_dict['shans'][1],title = 'Налоги', button = 'Ок')
+                pyautogui.alert(text = shans_dict['shans'][1],title = 'Шанс', button = 'Ок')
                 return _money
             elif choice == 3:
                 _money += 100
-                pyautogui.alert(text = shans_dict['shans'][2],title = 'Налоги', button = 'Ок')
+                pyautogui.alert(text = shans_dict['shans'][2],title = 'Шанс', button = 'Ок')
                 return _money
             elif choice == 4:
                 _pos = 'corner_01'#отправка в тюрьму, нужно уточнение Id тюрьмы(нужно вызывать на прямую или через img.map.corner.01)
-                pyautogui.alert(text = shans_dict['shans'][3],title = 'Налоги', button = 'Ок')
+                pyautogui.alert(text = shans_dict['shans'][3],title = 'Шанс', button = 'Ок')
                 return _pos
             elif choice == 5:
                 _money -= 300
-                pyautogui.alert(text = shans_dict['shans'][4],title = 'Налоги', button = 'Ок')
+                pyautogui.alert(text = shans_dict['shans'][4],title = 'Шанс', button = 'Ок')
                 return _money
         else:
             pass
