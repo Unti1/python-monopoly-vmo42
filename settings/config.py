@@ -3,6 +3,7 @@ import screeninfo
 import os,random
 from typing import NoReturn
 from pygame import *
+import pyautogui
 
 
 config = configparser.ConfigParser()  # создаём объекта парсера

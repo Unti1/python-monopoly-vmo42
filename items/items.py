@@ -20,13 +20,18 @@ class CardMap:
         """
         sprite.Sprite.__init__(self)
         self.active: bool = False
+        self.hover: bool = False
         self.Name: str = name
         self.ID: str = id
         self.XYpos: tuple = (x, y)
         self.Size: tuple = (width, height)
         self.card_offset: int = 2  # отступ между карточками
+        self.rotate: int = 0
+        self.miror: tuple[int,int] = (0, 0)
 
     def draw(self, screen: display, rotate: int = 0, miror: tuple[int,int] = (0, 0)):
+        self.rotate = rotate
+        self.miror = miror
         self.rect = Rect(self.XYpos[0], self.XYpos[1],
                          self.Size[0], self.Size[1])
         try:
@@ -44,6 +49,22 @@ class CardMap:
             self.image.fill(Color("#888888"))
         screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
     
+    def hovered(self,screen: display):
+        self.rect = Rect(self.XYpos[0] - self.card_offset, self.XYpos[1] - self.card_offset,
+                         self.Size[0] + self.card_offset*4, self.Size[1] + self.card_offset*4)
+        try:
+            # подгрузка изображения
+            self.image = image.load(f"assets/img/map/{self.Name}").convert()
+            # подгон картинки под размер объекта
+            self.image = transform.scale(self.image, self.Size)
+            self.image = transform.rotate(
+                self.image, self.rotate)  # поворот объекта
+            self.image = transform.flip(
+                self.image, self.miror[0], self.miror[1])  # отражение объекта
+            screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
+        except:
+            pass
+
     def back_draw(self,screen: display, x:int, y:int, size:tuple[int,int]):
         self.rect = Rect(x, y, size[0],size[1])
         try:
@@ -51,16 +72,9 @@ class CardMap:
             self.image = image.load(f"assets/img/back_cards/{self.Name}").convert()
             # подгон картинки под размер объекта
             self.image = transform.scale(self.image, size)
+            screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
         except:
             pass
-        screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
-    
-    @property
-    def active_card_area(self,X:int,Y:int,Size:tuple[int,int]) -> tuple[range,range]:
-        """
-        Выводит область взаимодействия выведенной карты
-        """
-        return (range(X, X + Size[0]), range(Y, Y+Size[1]))
 
     @property
     def card_area(self) -> tuple[range,range]:
