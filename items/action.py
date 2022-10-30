@@ -30,7 +30,7 @@ class Action:
                 'Став филантропом, Вы смогли сохранить 5% от своего бюджета, получите их в виде прибыли']}
                 match choice:
                     case 1:
-                        _money -= int(money/100 * 10)
+                        _money -= int(_money/100 * 10)
                         pyautogui.alert(text = nalog_dict['nalog'][0],title = 'Налоги', button = 'Ок')
                         return _money
                     case 2:
@@ -38,7 +38,7 @@ class Action:
                         pyautogui.alert(text = nalog_dict['nalog'][1],title = 'Налоги', button = 'Ок')
                         return _pos
                     case 3:
-                        _money += int(money/100 * 5)
+                        _money += int(_money/100 * 5)
                         pyautogui.alert(text = nalog_dict['nalog'][2],title = 'Налоги', button = 'Ок')
                         return _money
             case 'action_shans':
