@@ -1,9 +1,10 @@
+from turtle import Screen
 from settings.config import *
 from items import *
 import pygame
-import random
 
-class Game() :
+
+class Game():
     def __init__(self):
         self.__StatusBar = {
             "MainMenu": False,
@@ -37,20 +38,33 @@ class Game() :
     def mouse_control(self, event: pygame.event):
         """
         Модуль отслеживания мыши
-        TODO: Доделать наведение на карточку(увеличение её размера) и переворот карты 
+        TODO: Доделать наведение на карточку(увеличение её размера) и переворот карты
         Args:
             event (pygame.event): передать окно в котором происходит событие
         """
         match event.type:
             case pygame.MOUSEBUTTONDOWN:
-
                 for i in range(len(self.cards_areas)):
                     if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
-                        print("Нажата карта:", self.Map.get_MapCards[i].Name)
-                        self.Map.get_MapCards[i].back_draw(self.screen, int(
-                            config["Display"]["width"])//3, int(config["Display"]["height"])//2, (300, 500))
-                        pygame.display.flip()
-                        return (True)
+                        if self.Map.get_MapCards[i].active == False:
+                            self.Map.get_MapCards[i].active = True
+                            Y_centering = (
+                                self.Map.get_MapCards[i].Size[1]*(len(self.Map.get_MapCards) - 22)//3)
+                            X_centering = (
+                                self.Map.get_MapCards[i].Size[0]*(len(self.Map.get_MapCards) - 22)//2)
+                            print("Нажата карта:",
+                                  self.Map.get_MapCards[i].Name)
+                            self.Map.get_MapCards[i].back_draw(self.screen, X_centering, Y_centering, (
+                                self.Map.get_MapCards[i].Size[0]*3, self.Map.get_MapCards[i].Size[1]*3))
+                            break
+                    
+                    if self.Map.get_MapCards[i].active == True:
+                            self.Map.get_MapCards[i].active = False
+                            self.screen.blit(
+                                self.play_ground, self.play_ground_box)
+                            break
+                        
+                            
 
     def event_control(self):
         """
@@ -79,12 +93,12 @@ class Game() :
         """
         self.Map = self.map_init  # Создания объекта карты
         self.cards_init  # Cоздание пустых объектов для карт
+        self.Map.reshuffle_cards # Тасовка карт на поле
         x, y = self.__Outofboard  # Отступ от угла окна
         card_width = 80  # Ширина карты
         card_height = 120  # Высота карты
         card_counter = 0  # счетчик для обычных карт
         corner_counter = 0  # счетчик для угловых карт
-        self.Map.reshuffle_cards()
         no_corners_cards = self.Map.get_MapCards[4:]
         for row in self.Map.get_MapStructure:  # вся строка
             for col in row:  # каждый символ
@@ -151,11 +165,11 @@ class Game() :
                                 card = no_corners_cards[card_counter]
                                 card.XYpos = (x, y)
                                 card.Size = (card_width, card_height)
-                                card.draw(self.screen, rotate=90, miror=(0, 0))
+                                card.draw(self.screen, rotate=90,
+                                          miror=(0, 0))
                                 # границы карточек
                                 x += card.Size[1] + card.card_offset
                                 card_counter += 1
-
                     case _:
                         x += card_width + 2  # границы карточек
             if row == self.Map.get_MapStructure[0] or row == self.Map.get_MapStructure[-1]:
@@ -165,21 +179,27 @@ class Game() :
                 y += card_width + 2
             x = self.__Outofboard[0]
         # ВАЖНО! Задает области карточек в отдельный список для последующей работы
+        self.Map.set_MapSize(
+            (self.Map.get_MapCards[0].Size[0]*2 + (self.Map.get_MapCards[5].Size[0] + self.Map.get_MapCards[5].card_offset)
+             * 9, (self.Map.get_MapCards[5].Size[1]+ self.Map.get_MapCards[5].card_offset)*10)
+        )
+        self.play_ground_box = Rect(self.__Outofboard[0], self.__Outofboard[1], self.Map.get_MapSize[0], self.Map.get_MapSize[0])
+        self.play_ground = self.screen.subsurface(self.play_ground_box).copy()
         self.cards_areas = list(
             map(lambda x: x.card_area, self.Map.get_MapCards))
 
-    @property
+    @ property
     def playerlist_init(self):
         """
         Рендерит область игроков
-        TODO: Доработка 
+        TODO: Доработка
         """
         PlayerList = interface.PlayerList()
         PlayerList.XYpos = (0, self.__Outofboard[1])
         PlayerList.Size = (400, 600)
         return (PlayerList)
 
-    @property
+    @ property
     def cards_init(self):
         """
             Задает массив шаблонов карточек с ориентацией на их названия.
@@ -209,8 +229,8 @@ class Game() :
             print("Ошибка с переменной. Возможно не задан был объект \"Map\"")
         ###########################################################
 
-    @property
-    def map_init(self):
+    @ property
+    def map_init(self) -> items.Map:
         """
         Задает начальные параметры и инициирует объект карты
 
@@ -222,7 +242,7 @@ class Game() :
         Map.set_SessionID(random.randrange(100000000, 999999999))
         return (Map)
 
-    @property
+    @ property
     def screen_size_setup(self):
         """ Выставляет параметры экрана из конфигурационного файла
 
@@ -233,7 +253,7 @@ class Game() :
             config['Display']['WIDTH'])
         return (width, height)
 
-    @property
+    @ property
     def bg_color_setup(self):
         """ Устанавливает цвет заднего фона
 
@@ -243,7 +263,7 @@ class Game() :
         color = list(map(int, config['Screen']['BACKGROUND_COLOR'].split(",")))
         return (color)
 
-    @property
+    @ property
     def fps_setup(self):
         """
         Значение ограничение частоты кадров из конфигурационного файла

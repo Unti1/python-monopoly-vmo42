@@ -1,5 +1,4 @@
-from pygame import *
-from typing import NoReturn
+from settings.config import *
 
 
 #################################################################################################################################
@@ -20,13 +19,14 @@ class CardMap:
             height (int): Высота
         """
         sprite.Sprite.__init__(self)
+        self.active: bool = False
         self.Name: str = name
         self.ID: str = id
         self.XYpos: tuple = (x, y)
         self.Size: tuple = (width, height)
         self.card_offset: int = 2  # отступ между карточками
 
-    def draw(self, screen: display, rotate: int = 0, miror: tuple[int,int] = (0, 0)) -> NoReturn:
+    def draw(self, screen: display, rotate: int = 0, miror: tuple[int,int] = (0, 0)):
         self.rect = Rect(self.XYpos[0], self.XYpos[1],
                          self.Size[0], self.Size[1])
         try:
@@ -44,7 +44,7 @@ class CardMap:
             self.image.fill(Color("#888888"))
         screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
     
-    def back_draw(self,screen: display, x:int, y:int, size:tuple[int,int]) -> NoReturn:
+    def back_draw(self,screen: display, x:int, y:int, size:tuple[int,int]):
         self.rect = Rect(x, y, size[0],size[1])
         try:
             # подгрузка изображения
@@ -52,10 +52,15 @@ class CardMap:
             # подгон картинки под размер объекта
             self.image = transform.scale(self.image, size)
         except:
-            self.image = Surface(size)
-            transform.scale(self.image, size)
-            self.image.fill(Color("#888888"))
+            pass
         screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
+    
+    @property
+    def active_card_area(self,X:int,Y:int,Size:tuple[int,int]) -> tuple[range,range]:
+        """
+        Выводит область взаимодействия выведенной карты
+        """
+        return (range(X, X + Size[0]), range(Y, Y+Size[1]))
 
     @property
     def card_area(self) -> tuple[range,range]:
@@ -71,6 +76,7 @@ class Map:
     """
 
     def __init__(self):
+        self.__MapSize:tuple[int,int] = (0,0)
         self.__SessionID: str = ""
         self.__CurrentUsersList: dict = {}
         self.__MapImagePath: str = ""
@@ -88,8 +94,8 @@ class Map:
             ".---------.",
         ]
         self.__MapCards: list[CardMap] = []
-
-    def reshuffle_cards(self) -> NoReturn:
+    @property
+    def reshuffle_cards(self):
         """
             Тосовка карточек поля
         """
@@ -98,8 +104,8 @@ class Map:
             cards = self.__MapCards[4:]
             random.shuffle(cards)
             self.__MapCards[4:] = cards
-
-    def append_card(self, card: CardMap) -> NoReturn:
+    
+    def append_card(self, card: CardMap):
         """
             Добавление карты в конец списка
         Args:
@@ -107,7 +113,7 @@ class Map:
         """
         self.__MapCards.append(card)
 
-    def insert_card(self, ind, card: CardMap) -> NoReturn:
+    def insert_card(self, ind, card: CardMap):
         """
             Вставка карты на определенную позицию
         Args:
@@ -115,8 +121,15 @@ class Map:
             card (CardMap): объект карты
         """
         self.__MapCards.insert(ind, card)
-
-    def set_MapImagePath(self, value: str) -> NoReturn:
+    def set_MapSize(self,value:tuple[int,int]):
+        """
+        Задать область игрового поля
+        Args:
+            value (tuple[int,int]): размер квадрата поля
+        """
+        self.__MapSize = value
+        
+    def set_MapImagePath(self, value: str):
         """[Depracted] Путь к основному полю
 
         Args:
@@ -124,7 +137,7 @@ class Map:
         """
         self.__MapImagePath = value
 
-    def set_CurrentUsersList(self, value: dict) -> NoReturn:
+    def set_CurrentUsersList(self, value: dict):
         """
             Задать список игроков
         Args:
@@ -132,7 +145,7 @@ class Map:
         """
         self.__CurrentUsersList = value
 
-    def set_SessionID(self, value: str) -> NoReturn:
+    def set_SessionID(self, value: str):
         """ID игровой сессии
 
         Args:
@@ -144,6 +157,11 @@ class Map:
     def get_MapImagePath(self) -> str:
         """[Depracted] Путь к картинке основному поля"""
         return (self.__MapImagePath)
+    
+    @ property
+    def get_MapSize(self) -> str:
+        """ Область поля """
+        return (self.__MapSize)
 
     @ property
     def get_CurrentUsersList(self) -> list[str]:

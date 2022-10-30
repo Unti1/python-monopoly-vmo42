@@ -5,11 +5,9 @@ class Player:
     def __init__(self):
         """ """
         sprite.Sprite.__init__(self)
-        self._Size: tuple = (50,50)
-
-        Player.counter_players += 1 
+        self._Size: tuple = (50,50) # Размеры спрайта игрока
         self._ID: str = "" # Будет задаваться из .env от каждого пользователя
-        self._money: int = 500
+        self._money: int = 500 # Количество денег при начале игры
         # self.cards: List[] # должен быть List типа класса, который хранит карточки 
         self._pos: int = 0
 

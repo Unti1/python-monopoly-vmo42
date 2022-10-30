@@ -1,4 +1,3 @@
-from distutils.command.config import config
 from pygame import *
 from settings.config import *
 
