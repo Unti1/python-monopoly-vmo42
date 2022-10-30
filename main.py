@@ -15,7 +15,7 @@ class Game():
         self.__Outofboard = tuple(map(lambda x: x//4, self.screen_size_setup))
         pygame.init()
         pygame.mixer.init()  # для звука
-        pygame.display.set_caption("Monopoly")
+        display.set_caption("Монополия")
 
         self.screen = pygame.display.set_mode(self.screen_size_setup)
         self.clock = pygame.time.Clock()
@@ -53,8 +53,8 @@ class Game():
                         break
                     else:
                         self.Map.get_MapCards[i].hover = False
-                        
-                if True not in list(map(lambda x: x.hover,self.Map.get_MapCards)):
+
+                if True not in list(map(lambda x: x.hover, self.Map.get_MapCards)):
                     self.screen.blit(
                         self.play_ground, self.play_ground_box)
 
@@ -294,7 +294,7 @@ class Game():
     def mainmenu_game(self):
         """
         Функция запуска главного меню
-        TODO: Требуется разработка
+        TODO: Дорабатывается Игорем 
         """
         mm = interface.MainMenu()
         # mm.menu_draw(self.screen)
@@ -302,17 +302,18 @@ class Game():
         # print(mm.buttons_draw(self.screen))
 
     def testing(self):
-        """Для тестирования"""
+        """Для тестирования
+        TODO: Доделать взаимодействие с вводом текста
+        """
         self.screen.fill(self.bg_color_setup)
         pygame.display.flip()  # обновление кадра
-        # self.mainmenu_game()
-        self.start_game()
+
+        box = interface.InputBox(100, 100, 100, 100)
+        box.main(self.screen)
         while self.running:
             self.clock.tick(self.fps_setup)
-            self.event_control()
+            # self.event_control()
             pygame.display.flip()
-
-        pygame.quit()
 
     def run(self):
         """
