@@ -1,4 +1,3 @@
-from turtle import Screen
 from settings.config import *
 from items import *
 import pygame
