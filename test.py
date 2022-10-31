@@ -1,4 +1,3 @@
-from turtle import Screen
 from settings.config import *
 from items import *
 import pygame
@@ -15,11 +14,12 @@ class Game():
         self.__Outofboard = tuple(map(lambda x: x//4, self.screen_size_setup))
         pygame.init()
         pygame.mixer.init()  # для звука
-        pygame.display.set_caption("Monopoly")
+        display.set_caption("Монополия")
 
         self.screen = pygame.display.set_mode(self.screen_size_setup)
         self.clock = pygame.time.Clock()
         self.running = True
+        self.__CardsMap = []
 
     def keyboard_control(self, event: pygame.event):
         """
@@ -43,6 +43,20 @@ class Game():
             event (pygame.event): передать окно в котором происходит событие
         """
         match event.type:
+
+            case pygame.MOUSEMOTION:
+                for i in range(len(self.cards_areas)):
+                    if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
+                        self.Map.get_MapCards[i].hover = True
+                        self.Map.get_MapCards[i].hovered(self.screen)
+                        break
+                    else:
+                        self.Map.get_MapCards[i].hover = False
+
+                if True not in list(map(lambda x: x.hover, self.Map.get_MapCards)):
+                    self.screen.blit(
+                        self.play_ground, self.play_ground_box)
+
             case pygame.MOUSEBUTTONDOWN:
                 for i in range(len(self.cards_areas)):
                     if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
@@ -57,14 +71,12 @@ class Game():
                             self.Map.get_MapCards[i].back_draw(self.screen, X_centering, Y_centering, (
                                 self.Map.get_MapCards[i].Size[0]*3, self.Map.get_MapCards[i].Size[1]*3))
                             break
-                    
+
                     if self.Map.get_MapCards[i].active == True:
-                            self.Map.get_MapCards[i].active = False
-                            self.screen.blit(
-                                self.play_ground, self.play_ground_box)
-                            break
-                        
-                            
+                        self.Map.get_MapCards[i].active = False
+                        self.screen.blit(
+                            self.play_ground, self.play_ground_box)
+                        break
 
     def event_control(self):
         """
@@ -93,7 +105,7 @@ class Game():
         """
         self.Map = self.map_init  # Создания объекта карты
         self.cards_init  # Cоздание пустых объектов для карт
-        self.Map.reshuffle_cards # Тасовка карт на поле
+        self.Map.reshuffle_cards  # Тасовка карт на поле
         x, y = self.__Outofboard  # Отступ от угла окна
         card_width = 80  # Ширина карты
         card_height = 120  # Высота карты
@@ -181,9 +193,10 @@ class Game():
         # ВАЖНО! Задает области карточек в отдельный список для последующей работы
         self.Map.set_MapSize(
             (self.Map.get_MapCards[0].Size[0]*2 + (self.Map.get_MapCards[5].Size[0] + self.Map.get_MapCards[5].card_offset)
-             * 9, (self.Map.get_MapCards[5].Size[1]+ self.Map.get_MapCards[5].card_offset)*10)
+             * 9, (self.Map.get_MapCards[5].Size[1] + self.Map.get_MapCards[5].card_offset)*10)
         )
-        self.play_ground_box = Rect(self.__Outofboard[0], self.__Outofboard[1], self.Map.get_MapSize[0], self.Map.get_MapSize[0])
+        self.play_ground_box = Rect(
+            self.__Outofboard[0] - 100, self.__Outofboard[1] - 100, self.Map.get_MapSize[0]+100, self.Map.get_MapSize[0]+100)
         self.play_ground = self.screen.subsurface(self.play_ground_box).copy()
         self.cards_areas = list(
             map(lambda x: x.card_area, self.Map.get_MapCards))
@@ -280,7 +293,7 @@ class Game():
     def mainmenu_game(self):
         """
         Функция запуска главного меню
-        TODO: Требуется разработка
+        TODO: Дорабатывается Игорем 
         """
         mm = interface.MainMenu()
         # mm.menu_draw(self.screen)
@@ -288,9 +301,26 @@ class Game():
         # print(mm.buttons_draw(self.screen))
 
     def testing(self):
-        """Для тестирования"""
+        """Для тестирования
+        TODO: Доделать взаимодействие с вводом текста
+        """
         self.screen.fill(self.bg_color_setup)
         pygame.display.flip()  # обновление кадра
+
+        box = interface.InputBox(100, 100, 100, 100)
+        box.main(self.screen)
+        while self.running:
+            self.clock.tick(self.fps_setup)
+            # self.event_control()
+            pygame.display.flip()
+
+    def run(self):
+        """
+            Запускает саму игру
+        """
+        self.screen.fill(self.bg_color_setup)
+        pygame.display.flip()  # обновление кадра
+        # self.mainmenu_game()
         self.start_game()
         while self.running:
             self.clock.tick(self.fps_setup)

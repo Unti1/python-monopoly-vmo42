@@ -1,6 +1,6 @@
 import configparser
 import screeninfo
-import os,random
+import os,random,pygame
 from typing import NoReturn
 from pygame import *
 import pyautogui
