@@ -54,28 +54,29 @@ class Game():
                         self.Map.get_MapCards[i].hover = False
 
                 if True not in list(map(lambda x: x.hover, self.Map.get_MapCards)):
-                    self.screen.blit(
-                        self.play_ground, self.play_ground_box)
+                    self.screen.blit(self.play_ground, self.play_ground_box)
 
             case pygame.MOUSEBUTTONDOWN:
                 for i in range(len(self.cards_areas)):
                     if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
                         if self.Map.get_MapCards[i].active == False:
                             self.Map.get_MapCards[i].active = True
-                            Y_centering = (
-                                self.Map.get_MapCards[i].Size[1]*(len(self.Map.get_MapCards) - 22)//3)
-                            X_centering = (
-                                self.Map.get_MapCards[i].Size[0]*(len(self.Map.get_MapCards) - 22)//2)
+                            Y = (
+                                (self.Map.get_MapCards[i].Size[1] + self.Map.get_MapCards[i].card_offset)*(len(self.Map.get_MapCards) - 22)//3)
+                            X = (
+                                (self.Map.get_MapCards[i].Size[0] + self.Map.get_MapCards[i].card_offset)*(len(self.Map.get_MapCards) - 22)//5)*5
                             print("Нажата карта:",
                                   self.Map.get_MapCards[i].Name)
-                            self.Map.get_MapCards[i].back_draw(self.screen, X_centering, Y_centering, (
-                                self.Map.get_MapCards[i].Size[0]*3, self.Map.get_MapCards[i].Size[1]*3))
+                            self.back_card_rect = (
+                                self.screen, X, Y, self.Map.get_MapCards[i].Size[0]*5, self.Map.get_MapCards[i].Size[1]*4)
+                            self.Map.get_MapCards[i].back_draw(self.screen, X, Y, (
+                                self.Map.get_MapCards[i].Size[0]*5, self.Map.get_MapCards[i].Size[1]*4))
                             break
 
                     if self.Map.get_MapCards[i].active == True:
                         self.Map.get_MapCards[i].active = False
                         self.screen.blit(
-                            self.play_ground, self.play_ground_box)
+                            self.Map.get_MapCards[i].bg_before,(self.Map.get_MapCards[i].back_rect.x,self.Map.get_MapCards[i].back_rect.y) )
                         break
 
     def event_control(self):
@@ -159,7 +160,7 @@ class Game():
                                 card = no_corners_cards[card_counter]
                                 card.XYpos = (x, y)
                                 card.Size = (card_width, card_height)
-                                card.draw(self.screen, rotate=-180)
+                                card.draw(self.screen, rotate=0)
                                 # границы карточек
                                 x += card.Size[0] + card.card_offset
                                 card_counter += 1
@@ -177,7 +178,7 @@ class Game():
                                 card = no_corners_cards[card_counter]
                                 card.XYpos = (x, y)
                                 card.Size = (card_width, card_height)
-                                card.draw(self.screen, rotate=90,
+                                card.draw(self.screen, rotate=-90,
                                           miror=(0, 0))
                                 # границы карточек
                                 x += card.Size[1] + card.card_offset
@@ -196,7 +197,7 @@ class Game():
              * 9, (self.Map.get_MapCards[5].Size[1] + self.Map.get_MapCards[5].card_offset)*10)
         )
         self.play_ground_box = Rect(
-            self.__Outofboard[0] - 100, self.__Outofboard[1] - 100, self.Map.get_MapSize[0]+100, self.Map.get_MapSize[0]+100)
+            self.__Outofboard[0] - 100, self.__Outofboard[1] - 100, self.Map.get_MapSize[0]+100, self.Map.get_MapSize[0]+100)  # Область игрового поля
         self.play_ground = self.screen.subsurface(self.play_ground_box).copy()
         self.cards_areas = list(
             map(lambda x: x.card_area, self.Map.get_MapCards))
@@ -331,4 +332,4 @@ class Game():
 
 
 if __name__ == '__main__':
-    Game().testing()
+    Game().run()
