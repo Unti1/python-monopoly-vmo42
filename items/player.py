@@ -81,11 +81,6 @@ class Player:
         else:
             self._rotate += angle
 
-    def change_size(self, val: tuple(int,int)) -> NoReturn:
-        """ """
-
-        self._Size = val
-
     def offset_player(self) -> NoReturn:
         """ """
         pos = self._pos
