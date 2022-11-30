@@ -1,7 +1,7 @@
 from settings.config import *
 from items import *
 import pygame
-
+from items.player import Player
 
 class Game():
     def __init__(self):
@@ -289,6 +289,39 @@ class Game():
         """
         self.map_render()
         self.playerlist_render()
+        self.create_player()
+
+    def create_player(self):
+        """ 
+        Функция инициализации игроков
+        """
+
+        count_players = 3  # len(self.Players) нужно взять количество игроков
+        players = [Player() for _ in range(count_players)]
+        self.Map.set_CurrentUsersList(players)
+
+    def move_player(self, points: int, player_id: str):
+        """ """
+        x, y = self.Map.get_MapSize # или вынести за функцию
+        players = self.Map.get_CurrentUsersList
+        cards = self.Map.get_MapCards
+        index = 0
+        for i in range(len(players)):
+            if players[i].get_id() == player_id:
+                index = i
+                break
+        
+        for i in range(points):
+            current_card_ID = players[index].get_current_card_ID()
+            for card in cards:
+                if card.ID == current_card_ID:
+                    if card.ID in (0, 9, 19, 29):
+                        players[index].rotate(90) # повернуть угол, если на карточка угловая
+                    players[index].change_pos(card.XYpos)
+                    players[index].change_current_card(1)
+                    players[index].offset_player()
+                    # отрисовать скин в соответствие с новыми координатами и углом
+
 
     def mainmenu_game(self):
         """
@@ -306,7 +339,7 @@ class Game():
         """
         self.screen.fill(self.bg_color_setup)
         pygame.display.flip()  # обновление кадра
-
+    
         box = interface.InputBox(100, 100, 100, 100)
         box.main(self.screen)
         while self.running:
@@ -331,4 +364,4 @@ class Game():
 
 
 if __name__ == '__main__':
-    Game().testing()
+    Game().run()

@@ -4,6 +4,8 @@ import os,random,pygame
 from typing import NoReturn
 from pygame import *
 import pyautogui
+import os
+from typing import List
 
 
 config = configparser.ConfigParser()  # создаём объекта парсера

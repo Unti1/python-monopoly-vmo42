@@ -1,5 +1,5 @@
 from settings.config import *
-
+from items.player import Player
 
 #################################################################################################################################
 class CardMap:
@@ -93,6 +93,7 @@ class Map:
         self.__MapSize:tuple[int,int] = (0,0)
         self.__SessionID: str = ""
         self.__CurrentUsersList: dict = {}
+        # self.__CurrentUsersList: List = []
         self.__MapImagePath: str = ""
         self.__MapStructure: list[str] = [
             ".---------.",
@@ -158,6 +159,14 @@ class Map:
             value (dict): данные игроков . Шаблон {"уникальный id игрока": [*данные*]}
         """
         self.__CurrentUsersList = value
+
+    # def set_CurrentUsersList(self, value: List(str, Player)):
+    #     """
+    #         Задать список игроков
+    #     Args:
+    #         value (tuple): данные игроков . Шаблон ("уникальный id игрока": Player)
+    #     """
+    #     self.__CurrentUsersList.append((value[0], value[1]))
 
     def set_SessionID(self, value: str):
         """ID игровой сессии
