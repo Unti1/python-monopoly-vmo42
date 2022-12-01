@@ -6,7 +6,7 @@ import random
 class Game() :
     def __init__(self):
         self.__StatusBar = {
-            "MainMenu": False,
+            "MainMenu": True,
             "StartGame": False
         }
 
@@ -15,7 +15,6 @@ class Game() :
         pygame.init()
         pygame.mixer.init()  # для звука
         pygame.display.set_caption("Monopoly")
-
         self.screen = pygame.display.set_mode(self.screen_size_setup)
         self.clock = pygame.time.Clock()
         self.running = True
@@ -37,20 +36,36 @@ class Game() :
     def mouse_control(self, event: pygame.event):
         """
         Модуль отслеживания мыши
-        TODO: Доделать наведение на карточку(увеличение её размера) и переворот карты 
+        TODO: Доделать наведение на карточку(увеличение её размера) и переворот карты
         Args:
             event (pygame.event): передать окно в котором происходит событие
         """
         match event.type:
             case pygame.MOUSEBUTTONDOWN:
-
-                for i in range(len(self.cards_areas)):
-                    if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
-                        print("Нажата карта:", self.Map.get_MapCards[i].Name)
-                        self.Map.get_MapCards[i].back_draw(self.screen, int(
-                            config["Display"]["width"])//3, int(config["Display"]["height"])//2, (300, 500))
-                        pygame.display.flip()
-                        return (True)
+                #В зависимости от состоянии игры считывает разные области для нажатия
+                if self.__StatusBar["StartGame"]:
+                    for i in range(len(self.cards_areas)):
+                        if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
+                            print("Нажата карта:", self.Map.get_MapCards[i].Name)
+                            self.Map.get_MapCards[i].back_draw(self.screen, int(
+                                config["Display"]["width"])//3, int(config["Display"]["height"])//2, (300, 500))
+                            pygame.display.flip()
+                            return (True)
+                else:
+                    for i in range(len(self.btn_areas)):
+                        if (event.pos[0] in self.btn_areas[i][0]) and (event.pos[1] in self.btn_areas[i][1]):
+                            match i:
+                                case 0:
+                                    self.__StatusBar["MainMenu"], self.__StatusBar["StartGame"] = self.__StatusBar["StartGame"], self.__StatusBar["MainMenu"]
+                                    self.screen.fill(self.bg_color_setup)
+                                    pygame.display.flip()
+                                    self.start_game()
+                                    return (True)
+                                case 3:
+                                    self.config_wind()
+                                    return (True)
+                                case 2:
+                                    self.running = False
 
     def event_control(self):
         """
@@ -257,22 +272,28 @@ class Game() :
         self.map_render()
         self.playerlist_render()
 
+    def config_wind(self):
+        """
+        Окно настроек
+        """
+        cfg_wnd = interface.ConfigWind()
+        cfg_wnd.Draw(self.screen)
+
     def mainmenu_game(self):
         """
         Функция запуска главного меню
         TODO: Требуется разработка
         """
-        mm = interface.MainMenu()
-        # mm.menu_draw(self.screen)
-        mm.buttons_draw(self.screen)
-        # print(mm.buttons_draw(self.screen))
+        self.mm = interface.MainMenu()
+        self.mm.buttons_draw(self.screen)
+        self.btn_areas = self.mm.get_btn_areas()
 
     def testing(self):
         """Для тестирования"""
         self.screen.fill(self.bg_color_setup)
         pygame.display.flip()  # обновление кадра
-        # self.mainmenu_game()
-        self.start_game()
+        self.mainmenu_game()
+        # self.start_game()
         while self.running:
             self.clock.tick(self.fps_setup)
             self.event_control()
