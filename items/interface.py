@@ -1,6 +1,10 @@
 from pygame import *
 from settings.config import *
 
+
+    
+
+    
 class Text_Boxes:
     """
     TODO: Доделать взаимодействие с выводом текста на экран по позиции

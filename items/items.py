@@ -1,5 +1,5 @@
 from settings.config import *
-
+from items.player import Player
 
 #################################################################################################################################
 class CardMap:
@@ -28,11 +28,13 @@ class CardMap:
         self.card_offset: int = 2  # отступ между карточками
         self.rotate: int = 0
         self.miror: tuple[int,int] = (0, 0)
+        self.bg_before = None
+        self.back_rect = Rect(0,0,0,0)
 
     def draw(self, screen: display, rotate: int = 0, miror: tuple[int,int] = (0, 0)):
         self.rotate = rotate
         self.miror = miror
-        self.rect = Rect(self.XYpos[0], self.XYpos[1],
+        rect = Rect(self.XYpos[0], self.XYpos[1],
                          self.Size[0], self.Size[1])
         try:
             # подгрузка изображения
@@ -47,10 +49,10 @@ class CardMap:
             self.image = Surface(self.Size)
             transform.scale(self.image, self.Size)
             self.image.fill(Color("#888888"))
-        screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
+        screen.blit(self.image, (rect.x, rect.y))  # отрисовка
     
     def hovered(self,screen: display):
-        self.rect = Rect(self.XYpos[0] - self.card_offset, self.XYpos[1] - self.card_offset,
+        rect = Rect(self.XYpos[0] - self.card_offset, self.XYpos[1] - self.card_offset,
                          self.Size[0] + self.card_offset*4, self.Size[1] + self.card_offset*4)
         try:
             # подгрузка изображения
@@ -61,18 +63,19 @@ class CardMap:
                 self.image, self.rotate)  # поворот объекта
             self.image = transform.flip(
                 self.image, self.miror[0], self.miror[1])  # отражение объекта
-            screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
+            screen.blit(self.image, (rect.x, rect.y))  # отрисовка
         except:
             pass
 
     def back_draw(self,screen: display, x:int, y:int, size:tuple[int,int]):
-        self.rect = Rect(x, y, size[0],size[1])
+        self.back_rect = Rect(x, y, size[0],size[1])
+        self.bg_before = screen.subsurface(self.back_rect).copy()
         try:
             # подгрузка изображения
             self.image = image.load(f"assets/img/back_cards/{self.Name}").convert()
             # подгон картинки под размер объекта
             self.image = transform.scale(self.image, size)
-            screen.blit(self.image, (self.rect.x, self.rect.y))  # отрисовка
+            screen.blit(self.image, (self.back_rect.x, self.back_rect.y))  # отрисовка
         except:
             pass
 
@@ -93,6 +96,7 @@ class Map:
         self.__MapSize:tuple[int,int] = (0,0)
         self.__SessionID: str = ""
         self.__CurrentUsersList: dict = {}
+        # self.__CurrentUsersList: List = []
         self.__MapImagePath: str = ""
         self.__MapStructure: list[str] = [
             ".---------.",
@@ -142,7 +146,8 @@ class Map:
             value (tuple[int,int]): размер квадрата поля
         """
         self.__MapSize = value
-        
+    
+
     def set_MapImagePath(self, value: str):
         """[Depracted] Путь к основному полю
 
@@ -158,6 +163,14 @@ class Map:
             value (dict): данные игроков . Шаблон {"уникальный id игрока": [*данные*]}
         """
         self.__CurrentUsersList = value
+
+    # def set_CurrentUsersList(self, value: List(str, Player)):
+    #     """
+    #         Задать список игроков
+    #     Args:
+    #         value (tuple): данные игроков . Шаблон ("уникальный id игрока": Player)
+    #     """
+    #     self.__CurrentUsersList.append((value[0], value[1]))
 
     def set_SessionID(self, value: str):
         """ID игровой сессии
