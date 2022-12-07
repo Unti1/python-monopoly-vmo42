@@ -6,6 +6,7 @@ from pygame import *
 import pyautogui
 import os
 from typing import List
+from items.player import Player
 
 
 config = configparser.ConfigParser()  # создаём объекта парсера
