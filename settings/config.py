@@ -23,4 +23,3 @@ def set_display_maxsize() -> NoReturn:
     config_update()
 
 
-set_display_maxsize()

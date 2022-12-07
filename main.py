@@ -21,6 +21,7 @@ class Game():
         self.clock = pygame.time.Clock()
         self.running = True
         self.__CardsMap = []
+        set_display_maxsize()
 
     def keyboard_control(self, event: pygame.event):
         """
