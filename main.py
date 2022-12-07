@@ -1,7 +1,6 @@
 from settings.config import *
 from items import *
 import pygame
-from items.player import Player
 
 class Game():
     def __init__(self):
@@ -296,9 +295,14 @@ class Game():
         """ 
         Функция инициализации игроков
         """
-
+        cards = self.Map.get_MapCards  
+        for card in cards:
+            if card.ID == 0:
+                init_card = card
+                break
+        
         count_players = 3  # len(self.Players) нужно взять количество игроков
-        players = [Player() for _ in range(count_players)]
+        players = [Player((120, 100)).draw(self.play_ground) for _ in range(count_players)] # init_card.XYpos
         self.Map.set_CurrentUsersList(players)
 
     def move_player(self, points: int, player_id: str):
