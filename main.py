@@ -29,7 +29,14 @@ class Game() :
             case pygame.KEYDOWN:
                 match event.unicode:
                     case '\x1b':  # esc (пока что просто выход)
-                        self.running = False
+                        if self.__StatusBar['MainMenu']:
+                            exit(0)
+                        else:
+                            self.screen.fill(self.bg_color_setup)
+                            self.__StatusBar["MainMenu"], self.__StatusBar["StartGame"] = self.__StatusBar["StartGame"], \
+                                                                                          self.__StatusBar["MainMenu"]
+                            self.mainmenu_game()
+
             case pygame.KEYUP:
                 pass
 
@@ -56,9 +63,11 @@ class Game() :
                         if (event.pos[0] in self.btn_areas[i][0]) and (event.pos[1] in self.btn_areas[i][1]):
                             match i:
                                 case 0:
+                                    self.mm.btn_animation(0)
+                                    pygame.display.flip()
                                     self.__StatusBar["MainMenu"], self.__StatusBar["StartGame"] = self.__StatusBar["StartGame"], self.__StatusBar["MainMenu"]
                                     self.screen.fill(self.bg_color_setup)
-                                    pygame.display.flip()
+
                                     self.start_game()
                                     return (True)
                                 case 3:

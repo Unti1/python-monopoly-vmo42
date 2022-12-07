@@ -6,10 +6,10 @@ from pygame import *
 
 
 config = configparser.ConfigParser()  # создаём объекта парсера
-config.read("settings/settings.ini")  # читаем конфиг
+config.read(r'C:\Users\Asus\Documents\GitHub\python-java-monopoly-vmo42\settings\settings.ini')  # читаем конфиг
 
 def config_update( ) -> NoReturn:
-    with open('settings/settings.ini', 'w') as f:
+    with open(r'C:\Users\Asus\Documents\GitHub\python-java-monopoly-vmo42\settings\settings.ini', 'w') as f:
         config.write(f)
 
 def set_display_maxsize() -> bool:

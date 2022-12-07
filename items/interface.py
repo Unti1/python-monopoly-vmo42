@@ -1,6 +1,7 @@
 from distutils.command.config import config
 from pygame import *
 from settings.config import *
+from time import sleep
 
 
 class MainMenu:
@@ -50,6 +51,12 @@ class MainMenu:
         areas.append((range(self.cfg_coord[0] - self.image[-1].get_width(), self.cfg_coord[0] + self.image[-1].get_width()),
                       range(self.cfg_coord[1] - self.image[-1].get_height(), self.cfg_coord[1] + self.image[-1].get_height())))
         return areas
+
+    def btn_animation(self, btn_numb):
+        self.image[btn_numb] = transform.scale(self.image[btn_numb], (100, 100))
+
+        sleep(100)
+
 
 
 class PlayerList:
