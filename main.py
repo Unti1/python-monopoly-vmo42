@@ -3,6 +3,7 @@ from items import *
 import pygame
 from items.player import Player
 
+
 class Game():
     def __init__(self):
         self.__StatusBar = {
@@ -66,7 +67,7 @@ class Game():
                             X = (
                                 (self.Map.get_MapCards[i].Size[0] + self.Map.get_MapCards[i].card_offset)*(len(self.Map.get_MapCards) - 22)//5)*5
                             print("Нажата карта:",
-                                  self.Map.get_MapCards[i].Name)
+                                  self.Map.get_MapCards[i].Name, "ID карты: ",self.Map.get_MapCards[i].ID)
                             self.back_card_rect = (
                                 self.screen, X, Y, self.Map.get_MapCards[i].Size[0]*5, self.Map.get_MapCards[i].Size[1]*4)
                             self.Map.get_MapCards[i].back_draw(self.screen, X, Y, (
@@ -76,7 +77,7 @@ class Game():
                     if self.Map.get_MapCards[i].active == True:
                         self.Map.get_MapCards[i].active = False
                         self.screen.blit(
-                            self.Map.get_MapCards[i].bg_before,(self.Map.get_MapCards[i].back_rect.x,self.Map.get_MapCards[i].back_rect.y) )
+                            self.Map.get_MapCards[i].bg_before, (self.Map.get_MapCards[i].back_rect.x, self.Map.get_MapCards[i].back_rect.y))
                         break
 
     def event_control(self):
@@ -86,8 +87,11 @@ class Game():
         """
         for event in pygame.event.get():
             # print(event)
-            self.keyboard_control(event)
-            self.mouse_control(event)
+            try:
+                self.keyboard_control(event)
+                self.mouse_control(event)
+            except Exception as e:
+                print(e)
             # проверить закрытие окна
             if event.type == pygame.QUIT:
                 self.running = False
@@ -238,6 +242,7 @@ class Game():
                     self.Map.append_card(items.CardMap(
                         f_name, counter, 0, 0, 0, 0))
                     counter += 1
+            self.Map.generate_card_ID()
             return (self.Map.get_MapCards)
         except AttributeError:
             print("Ошибка с переменной. Возможно не задан был объект \"Map\"")
@@ -303,7 +308,7 @@ class Game():
 
     def move_player(self, points: int, player_id: str):
         """ """
-        x, y = self.Map.get_MapSize # или вынести за функцию
+        x, y = self.Map.get_MapSize  # или вынести за функцию
         players = self.Map.get_CurrentUsersList
         cards = self.Map.get_MapCards
         index = 0
@@ -311,18 +316,18 @@ class Game():
             if players[i].get_id() == player_id:
                 index = i
                 break
-        
+
         for i in range(points):
             current_card_ID = players[index].get_current_card_ID()
             for card in cards:
                 if card.ID == current_card_ID:
                     if card.ID in (0, 9, 19, 29):
-                        players[index].rotate(90) # повернуть угол, если на карточка угловая
+                        # повернуть угол, если на карточка угловая
+                        players[index].rotate(90)
                     players[index].change_pos(card.XYpos)
                     players[index].change_current_card(1)
                     players[index].offset_player()
                     # отрисовать скин в соответствие с новыми координатами и углом
-
 
     def mainmenu_game(self):
         """
@@ -340,7 +345,7 @@ class Game():
         """
         self.screen.fill(self.bg_color_setup)
         pygame.display.flip()  # обновление кадра
-    
+
         box = interface.InputBox(100, 100, 100, 100)
         box.main(self.screen)
         while self.running:

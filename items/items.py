@@ -22,7 +22,7 @@ class CardMap:
         self.active: bool = False
         self.hover: bool = False
         self.Name: str = name
-        self.ID: str = id
+        self.ID: int = id
         self.XYpos: tuple = (x, y)
         self.Size: tuple = (width, height)
         self.card_offset: int = 2  # отступ между карточками
@@ -139,6 +139,16 @@ class Map:
             card (CardMap): объект карты
         """
         self.__MapCards.insert(ind, card)
+    def generate_card_ID(self):
+        """
+            Вставка карты на определенную позицию
+        Args:
+            ind (_type_): позиция в списке
+            card (CardMap): объект карты
+        """
+        for i in range(len(self.__MapCards)):
+            self.__MapCards[i].ID = i
+
     def set_MapSize(self,value:tuple[int,int]):
         """
         Задать область игрового поля
