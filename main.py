@@ -7,7 +7,7 @@ class Game():
     def __init__(self):
         self.__StatusBar = {
             "MainMenu": False,
-            "StartGame": False
+            "Game": False
         }
 
         # Позиция для игровой доски
@@ -19,6 +19,7 @@ class Game():
         self.screen = pygame.display.set_mode(self.screen_size_setup)
         self.clock = pygame.time.Clock()
         self.running = True
+        self.cards_areas = []
         self.__CardsMap = []
         set_display_maxsize()
 
@@ -46,39 +47,41 @@ class Game():
         match event.type:
 
             case pygame.MOUSEMOTION:
-                for i in range(len(self.cards_areas)):
-                    if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
-                        self.Map.get_MapCards[i].hover = True
-                        self.Map.get_MapCards[i].hovered(self.screen)
-                        break
-                    else:
-                        self.Map.get_MapCards[i].hover = False
+                if self.__StatusBar['Game']:
+                    for i in range(len(self.cards_areas)):
+                        if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
+                            self.Map.get_MapCards[i].hover = True
+                            self.Map.get_MapCards[i].hovered(self.screen)
+                            break
+                        else:
+                            self.Map.get_MapCards[i].hover = False
 
-                if True not in list(map(lambda x: x.hover, self.Map.get_MapCards)):
-                    self.screen.blit(self.play_ground, self.play_ground_box)
+                    if True not in list(map(lambda x: x.hover, self.Map.get_MapCards)):
+                        self.screen.blit(self.play_ground, self.play_ground_box)
 
             case pygame.MOUSEBUTTONDOWN:
-                for i in range(len(self.cards_areas)):
-                    if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
-                        if self.Map.get_MapCards[i].active == False:
-                            self.Map.get_MapCards[i].active = True
-                            Y = (
-                                (self.Map.get_MapCards[i].Size[1] + self.Map.get_MapCards[i].card_offset)*(len(self.Map.get_MapCards) - 22)//3)
-                            X = (
-                                (self.Map.get_MapCards[i].Size[0] + self.Map.get_MapCards[i].card_offset)*(len(self.Map.get_MapCards) - 22)//5)*5
-                            print("Нажата карта:",
-                                  self.Map.get_MapCards[i].Name, "ID карты: ",self.Map.get_MapCards[i].ID)
-                            self.back_card_rect = (
-                                self.screen, X, Y, self.Map.get_MapCards[i].Size[0]*5, self.Map.get_MapCards[i].Size[1]*4)
-                            self.Map.get_MapCards[i].back_draw(self.screen, X, Y, (
-                                self.Map.get_MapCards[i].Size[0]*5, self.Map.get_MapCards[i].Size[1]*4))
-                            break
+                if self.__StatusBar['Game']:
+                    for i in range(len(self.cards_areas)):
+                        if (event.pos[0] in self.cards_areas[i][0]) and (event.pos[1] in self.cards_areas[i][1]):
+                            if self.Map.get_MapCards[i].active == False:
+                                self.Map.get_MapCards[i].active = True
+                                Y = (
+                                    (self.Map.get_MapCards[i].Size[1] + self.Map.get_MapCards[i].card_offset)*(len(self.Map.get_MapCards) - 22)//3)
+                                X = (
+                                    (self.Map.get_MapCards[i].Size[0] + self.Map.get_MapCards[i].card_offset)*(len(self.Map.get_MapCards) - 22)//5)*5
+                                print("Нажата карта:",
+                                    self.Map.get_MapCards[i].Name, "ID карты: ",self.Map.get_MapCards[i].ID)
+                                self.back_card_rect = (
+                                    self.screen, X, Y, self.Map.get_MapCards[i].Size[0]*5, self.Map.get_MapCards[i].Size[1]*4)
+                                self.Map.get_MapCards[i].back_draw(self.screen, X, Y, (
+                                    self.Map.get_MapCards[i].Size[0]*5, self.Map.get_MapCards[i].Size[1]*4))
+                                break
 
-                    if self.Map.get_MapCards[i].active == True:
-                        self.Map.get_MapCards[i].active = False
-                        self.screen.blit(
-                            self.Map.get_MapCards[i].bg_before, (self.Map.get_MapCards[i].back_rect.x, self.Map.get_MapCards[i].back_rect.y))
-                        break
+                        if self.Map.get_MapCards[i].active == True:
+                            self.Map.get_MapCards[i].active = False
+                            self.screen.blit(
+                                self.Map.get_MapCards[i].bg_before, (self.Map.get_MapCards[i].back_rect.x, self.Map.get_MapCards[i].back_rect.y))
+                            break
 
     def event_control(self):
         """
@@ -293,6 +296,7 @@ class Game():
         """
         Функция запуска начала игры
         """
+        self.__StatusBar["Game"],self.__StatusBar["MainMenu"] = True,False
         self.map_render()
         self.playerlist_render()
         self.create_player()
@@ -339,6 +343,7 @@ class Game():
         Функция запуска главного меню
         TODO: Дорабатывается Игорем 
         """
+        self.__StatusBar["Game"],self.__StatusBar["MainMenu"] = True
         mm = interface.MainMenu()
         # mm.menu_draw(self.screen)
         mm.buttons_draw(self.screen)
@@ -364,7 +369,7 @@ class Game():
         """
         self.screen.fill(self.bg_color_setup)
         pygame.display.flip()  # обновление кадра
-        # self.mainmenu_game()
+        self.mainmenu_game()
         self.start_game()
         while self.running:
             self.clock.tick(self.fps_setup)
