@@ -22,6 +22,7 @@ class MainMenu:
         self.image: list = []
         self.cfg_margin: int = 10
         self.cfg_coord: tuple = (int(config.get("Display", "width")) - self.cfg_margin, int(config.get("Display", "height")) - self.cfg_margin)
+        self.hover = False
 
     def buttons_draw(self, screen) -> NoReturn:
         """
@@ -52,10 +53,20 @@ class MainMenu:
                       range(self.cfg_coord[1] - self.image[-1].get_height(), self.cfg_coord[1] + self.image[-1].get_height())))
         return areas
 
-    def btn_animation(self, btn_numb):
-        self.image[btn_numb] = transform.scale(self.image[btn_numb], (100, 100))
+    def hovered(self, screen: display, btn_numb: int):
+        margin: int = 4
+        images_name: tuple = ('run_but.png', 'con_but.png', 'quit_but.png', 'cfg_but.png')
+        rect = Rect(self.XYpos[0] - margin, self.XYpos[1] - margin,
+                         self.Size[0] + margin, self.Size[1] + margin)
+        try:
+            # подгрузка изображения
+            self.hov_image = image.load(f"{self.buttons_path}/{images_name[btn_numb]}").convert()
+            # подгон картинки под размер объекта
+            self.hov_image = transform.scale(self.hov_image, self.Size) # поворот объекта
+            screen.blit(self.hov_image, (rect.x, rect.y))  # отрисовка
+        except:
+            pass
 
-        sleep(100)
 
 
 
