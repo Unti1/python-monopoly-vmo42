@@ -65,6 +65,17 @@ class Game():
                     if True not in list(map(lambda x: x.hover, self.Map.get_MapCards)):
                         self.screen.blit(self.play_ground,
                                          self.play_ground_box)
+                else:
+                    for i in range(len(self.btn_areas)):
+                        if (event.pos[0] in self.btn_areas[i][0]) and (event.pos[1] in self.btn_areas[i][1]):
+                            self.mm.hover = True
+                            self.mm.hovered(self.screen, i)
+                            break
+                        else:
+                            self.mm.hover = False
+                    if not self.mm.hover:
+                        self.screen.blit(self.mm_hov,
+                                         self.mm_hov_box)
 
             case pygame.MOUSEBUTTONDOWN:
                 if self.__StatusBar['Game']:
@@ -326,10 +337,12 @@ class Game():
         Функция запуска главного меню
         TODO: Требуется разработка
         """
-        self.__StatusBar["Game"], self.__StatusBar["MainMenu"] = True
+        self.__StatusBar["Game"], self.__StatusBar["MainMenu"] = False, True
         self.mm = interface.MainMenu()
         self.mm.buttons_draw(self.screen)
         self.btn_areas = self.mm.get_btn_areas()
+        self.mm_hov_box = Rect(0, 0, self.screen_size_setup[0], self.screen_size_setup[1])
+        self.mm_hov = self.screen.subsurface(self.mm_hov_box).copy()
 
     def testing(self):
         """Для тестирования"""
