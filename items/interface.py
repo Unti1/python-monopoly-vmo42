@@ -56,18 +56,19 @@ class MainMenu:
     def hovered(self, screen: display, btn_numb: int):
         margin: int = 4
         images_name: tuple = ('run_but.png', 'con_but.png', 'quit_but.png', 'cfg_but.png')
-        rect = Rect(self.XYpos[0] - margin, self.XYpos[1] - margin,
-                         self.Size[0] + margin, self.Size[1] + margin)
         try:
+            if btn_numb == 3:
+                rect = Rect(self.cfg_coord[0] - self.image[-1].get_width(), self.cfg_coord[0] + self.image[-1].get_width(),
+                            self.cfg_coord[1] - self.image[-1].get_height(), self.cfg_coord[1] + self.image[-1].get_height())
+            else:
+                rect = Rect(self.XYpos[0] - margin, self.buttons_y_pos[btn_numb] - margin,
+                            self.XYpos[1] + margin, self.Size[1] + margin)
             # подгрузка изображения
             self.hov_image = image.load(f"{self.buttons_path}/{images_name[btn_numb]}").convert()
-            # подгон картинки под размер объекта
-            self.hov_image = transform.scale(self.hov_image, self.Size) # поворот объекта
-            screen.blit(self.hov_image, (rect.x, rect.y))  # отрисовка
+            self.hov_image = transform.scale(self.hov_image, (self.image[btn_numb].get_width() + margin, self.image[btn_numb].get_height() + margin))
+            screen.blit(self.hov_image, (rect.x, rect.y))
         except:
             pass
-
-
 
 
 class PlayerList:
