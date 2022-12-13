@@ -8,7 +8,8 @@ class Game():
     def __init__(self):
         self.__StatusBar = {
             "MainMenu": True,
-            "Game": False
+            "Game": False,
+            "GameStarted": False #Проверка на то, запускалась ли игра в сессии
         }
 
         # Позиция для игровой доски
@@ -32,10 +33,18 @@ class Game():
         match event.type:
             case pygame.KEYDOWN:
                 match event.unicode:
-                    case '\x1b':  # esc (пока что просто выход)
+                    case '\x1b':  # esc (пока что просто выход(уже не просто выход, а открытие меню))
                         if self.__StatusBar['MainMenu']:
-                            exit(0)
+                            if self.__StatusBar["GameStarted"]:
+                                self.__StatusBar["MainMenu"], self.__StatusBar["Game"] = self.__StatusBar["Game"], \
+                                    self.__StatusBar["MainMenu"]
+                                self.screen.fill(self.bg_color_setup)
+                                self.screen.blit(self.game_screen, self.game_screen_box)
+                            else:
+                                exit(0)
                         else:
+                            self.game_screen_box = Rect(0, 0, self.screen_size_setup[0] - 1, self.screen_size_setup[1] - 1)
+                            self.game_screen = self.screen.subsurface(self.game_screen_box).copy()
                             self.screen.fill(self.bg_color_setup)
                             self.__StatusBar["MainMenu"], self.__StatusBar["Game"] = self.__StatusBar["Game"], \
                                 self.__StatusBar["MainMenu"]
@@ -105,14 +114,17 @@ class Game():
                         if (event.pos[0] in self.btn_areas[i][0]) and (event.pos[1] in self.btn_areas[i][1]):
                             match i:
                                 case 0:
-                                    self.mm.btn_animation(0)
-                                    pygame.display.flip()
-                                    self.__StatusBar["MainMenu"], self.__StatusBar[
-                                        "Game"] = self.__StatusBar["Game"], self.__StatusBar["MainMenu"]
-                                    self.screen.fill(self.bg_color_setup)
-
-                                    self.start_game()
-                                    return (True)
+                                    if self.__StatusBar["GameStarted"]:
+                                        self.__StatusBar["MainMenu"], self.__StatusBar[
+                                            "Game"] = self.__StatusBar["Game"], self.__StatusBar["MainMenu"]
+                                        self.screen.fill(self.bg_color_setup)
+                                        self.screen.blit(self.game_screen, self.game_screen_box)
+                                    else:
+                                        self.__StatusBar["MainMenu"], self.__StatusBar[
+                                            "Game"] = self.__StatusBar["Game"], self.__StatusBar["MainMenu"]
+                                        self.screen.fill(self.bg_color_setup)
+                                        self.start_game()
+                                        return (True)
                                 case 3:
                                     self.config_wind()
                                     return (True)
@@ -151,7 +163,7 @@ class Game():
         card_height = 120  # Высота карты
         card_counter = 0  # счетчик для обычных карт
         corner_counter = 0  # счетчик для угловых карт
-        self.Map.reshuffle_cards()
+        self.Map.reshuffle_cards
         no_corners_cards = self.Map.get_MapCards[4:]
         for row in self.Map.get_MapStructure:  # вся строка
             for col in row:  # каждый символ
@@ -321,7 +333,7 @@ class Game():
         """
         Функция запуска начала игры
         """
-        self.__StatusBar["Game"], self.__StatusBar["MainMenu"] = True, False
+        self.__StatusBar["Game"], self.__StatusBar["MainMenu"], self.__StatusBar["GameStarted"] = True, False, True
         self.map_render()
         self.playerlist_render()
 
