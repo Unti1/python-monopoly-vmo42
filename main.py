@@ -71,9 +71,9 @@ class Game():
                         else:
                             self.Map.get_MapCards[i].hover = False
 
-                    if True not in list(map(lambda x: x.hover, self.Map.get_MapCards)):
-                        self.screen.blit(self.play_ground,
-                                         self.play_ground_box)
+                    # if True not in list(map(lambda x: x.hover, self.Map.get_MapCards)):
+                    #     self.screen.blit(self.play_ground,
+                    #                      self.play_ground_box)
                 else:
                     for i in range(len(self.btn_areas)):
                         if (event.pos[0] in self.btn_areas[i][0]) and (event.pos[1] in self.btn_areas[i][1]):

@@ -10,10 +10,10 @@ from items.player import Player
 
 
 config = configparser.ConfigParser()  # создаём объекта парсера
-config.read(r'C:\Users\laval\python-java-monopoly-vmo42\python-java-monopoly-vmo42\settings\settings.ini')  # читаем конфиг
+config.read(r'.\settings\settings.ini')  # читаем конфиг
 
 def config_update( ) -> NoReturn:
-    with open(r'C:\Users\laval\python-java-monopoly-vmo42\python-java-monopoly-vmo42\settings\settings.ini', 'w') as f:
+    with open(r'.\settings\settings.ini', 'w') as f:
         config.write(f)
 
 def set_display_maxsize() -> NoReturn:
